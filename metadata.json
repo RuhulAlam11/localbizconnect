@@ -1,0 +1,8 @@
+{
+  "name": "LocalBiz Connect",
+  "description": "Hyperlocal marketplace connecting neighbors with verified local shops. Supports product cataloging, service bookings, and neighborhood delivery.",
+  "requestFramePermissions": [
+    "camera",
+    "geolocation"
+  ]
+}
