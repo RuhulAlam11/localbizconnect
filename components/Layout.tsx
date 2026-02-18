@@ -4,6 +4,7 @@ import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { User, Notification, Shop, Product } from '../types';
 import { storage } from '../services/storageService';
 import { SHOP_CATEGORIES } from '../constants';
+import AIAssistant from './AIAssistant';
 
 interface LayoutProps {
   children: React.ReactNode;
