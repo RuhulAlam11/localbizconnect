@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-/* Always use named import for GoogleGenAI */
-import { GoogleGenAI } from '@google/genai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 import { storage } from '../services/storageService';
 
 const AIAssistant: React.FC = () => {
@@ -9,7 +8,7 @@ const AIAssistant: React.FC = () => {
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const genAI = new GoogleGenAI(process.env.REACT_APP_GOOGLE_AI_KEY || '');
+  const genAI = new GoogleGenerativeAI(process.env.REACT_APP_GOOGLE_AI_KEY || '');
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -30,7 +29,7 @@ const AIAssistant: React.FC = () => {
     setLoading(true);
 
     try {
-      const model = genAI.getGenerativeModel({ model: 'gemini-pro' });
+      const model = genAI.getGenerativeModel({ model: 'gemini-1.5-flash' });
       const result = await model.generateContent(input);
       const aiResponse = result.response.text();
 
@@ -51,6 +50,8 @@ const AIAssistant: React.FC = () => {
       {/* Floating Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
+        title={isOpen ? 'Close AI Assistant' : 'Open AI Assistant'}
+        aria-label={isOpen ? 'Close AI Assistant' : 'Open AI Assistant'}
         className="fixed bottom-6 right-6 w-14 h-14 bg-indigo-600 rounded-full shadow-lg hover:bg-indigo-700 transition-all flex items-center justify-center text-white z-[99] active:scale-95"
       >
         <i className={`fas ${isOpen ? 'fa-times' : 'fa-robot'} text-lg`}></i>
@@ -117,6 +118,8 @@ const AIAssistant: React.FC = () => {
               <button
                 type="submit"
                 disabled={loading || !input.trim()}
+                title="Send message"
+                aria-label="Send message"
                 className="px-4 py-2 bg-indigo-600 text-white rounded-xl font-bold text-xs hover:bg-indigo-700 disabled:opacity-50 transition-all active:scale-95"
               >
                 <i className="fas fa-paper-plane"></i>

@@ -113,6 +113,8 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
                 <button 
                   type="button" 
                   onClick={() => setShowFilterMenu(!showFilterMenu)}
+                  title={showFilterMenu ? 'Close filters' : 'Open advanced filters'}
+                  aria-label={showFilterMenu ? 'Close filters' : 'Open advanced filters'}
                   className={`absolute right-4 p-2 transition-colors ${showFilterMenu ? 'text-indigo-600' : 'text-slate-400 hover:text-indigo-600'}`}
                 >
                   <i className="fas fa-sliders-h"></i>
@@ -123,25 +125,81 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
                 <div className="absolute top-full right-0 mt-3 w-80 bg-white rounded-[2.5rem] shadow-2xl border border-slate-100 overflow-hidden z-[110] p-6 animate-in slide-in-from-top-2">
                    <h4 className="text-[10px] font-black uppercase tracking-widest text-slate-400 mb-6">Advanced Filter</h4>
                    <div className="space-y-4">
-                      <input type="text" placeholder="By Name..." className="w-full bg-slate-50 border-none rounded-xl p-3.5 text-xs font-bold" value={fName} onChange={(e) => setFName(e.target.value)} />
-                      <input type="text" placeholder="By Address/Pincode..." className="w-full bg-slate-50 border-none rounded-xl p-3.5 text-xs font-bold" value={fLoc} onChange={(e) => setFLoc(e.target.value)} />
-                      <select className="w-full bg-slate-50 border-none rounded-xl p-3.5 text-xs font-bold appearance-none" value={fType} onChange={(e) => setFType(e.target.value)}>
+                      <input 
+                        type="text" 
+                        placeholder="By Name..." 
+                        title="Filter shops by name"
+                        aria-label="Filter shops by name"
+                        className="w-full bg-slate-50 border-none rounded-xl p-3.5 text-xs font-bold" 
+                        value={fName} 
+                        onChange={(e) => setFName(e.target.value)} 
+                      />
+                      <input 
+                        type="text" 
+                        placeholder="By Address/Pincode..." 
+                        title="Filter by address or pincode"
+                        aria-label="Filter by address or pincode"
+                        className="w-full bg-slate-50 border-none rounded-xl p-3.5 text-xs font-bold" 
+                        value={fLoc} 
+                        onChange={(e) => setFLoc(e.target.value)} 
+                      />
+                      <select 
+                        title="Filter by shop type"
+                        aria-label="Filter by shop type"
+                        className="w-full bg-slate-50 border-none rounded-xl p-3.5 text-xs font-bold appearance-none" 
+                        value={fType} 
+                        onChange={(e) => setFType(e.target.value)}
+                      >
                         <option value="all">Any Shop Type</option>
                         <option value="product">Product Based</option>
                         <option value="service">Service Based</option>
                         <option value="both">Both</option>
                       </select>
                       <div className="flex items-center justify-between p-2">
-                        <span className="text-xs font-bold text-slate-500">Delivery Available</span>
-                        <input type="checkbox" checked={fDelivery} onChange={(e) => setFDelivery(e.target.checked)} className="accent-indigo-600" />
+                        <label htmlFor="delivery-check" className="text-xs font-bold text-slate-500">Delivery Available</label>
+                        <input 
+                          id="delivery-check"
+                          type="checkbox" 
+                          title="Filter by delivery availability"
+                          aria-label="Filter by delivery availability"
+                          checked={fDelivery} 
+                          onChange={(e) => setFDelivery(e.target.checked)} 
+                          className="accent-indigo-600" 
+                        />
                       </div>
                       <div className="flex gap-2">
-                        <input type="number" placeholder="Min ₹" className="w-1/2 bg-slate-50 border-none rounded-xl p-3 text-xs font-bold" value={fPrice.min} onChange={(e) => setFPrice({...fPrice, min: e.target.value})} />
-                        <input type="number" placeholder="Max ₹" className="w-1/2 bg-slate-50 border-none rounded-xl p-3 text-xs font-bold" value={fPrice.max} onChange={(e) => setFPrice({...fPrice, max: e.target.value})} />
+                        <input 
+                          type="number" 
+                          placeholder="Min ₹" 
+                          title="Minimum price filter"
+                          aria-label="Minimum price"
+                          className="w-1/2 bg-slate-50 border-none rounded-xl p-3 text-xs font-bold" 
+                          value={fPrice.min} 
+                          onChange={(e) => setFPrice({...fPrice, min: e.target.value})} 
+                        />
+                        <input 
+                          type="number" 
+                          placeholder="Max ₹" 
+                          title="Maximum price filter"
+                          aria-label="Maximum price"
+                          className="w-1/2 bg-slate-50 border-none rounded-xl p-3 text-xs font-bold" 
+                          value={fPrice.max} 
+                          onChange={(e) => setFPrice({...fPrice, max: e.target.value})} 
+                        />
                       </div>
                       <div className="flex items-center justify-between px-2">
-                         <span className="text-[10px] font-black uppercase text-slate-400">Radius: {fRadius}km</span>
-                         <input type="range" min="1" max="10" value={fRadius} onChange={(e) => setFRadius(e.target.value)} className="w-1/2 accent-indigo-600" />
+                         <label htmlFor="radius-slider" className="text-[10px] font-black uppercase text-slate-400">Radius: {fRadius}km</label>
+                         <input 
+                          id="radius-slider"
+                          type="range" 
+                          min="1" 
+                          max="10" 
+                          title="Select search radius in kilometers"
+                          aria-label="Select search radius in kilometers"
+                          value={fRadius} 
+                          onChange={(e) => setFRadius(e.target.value)} 
+                          className="w-1/2 accent-indigo-600" 
+                         />
                       </div>
                       <button onClick={() => handleSearch()} className="w-full py-4 bg-slate-900 text-white rounded-2xl text-[10px] font-black uppercase tracking-widest shadow-xl">Apply Filters</button>
                    </div>
@@ -285,6 +343,9 @@ const Layout: React.FC<LayoutProps> = ({ children, user, onLogout }) => {
           </div>
         </div>
       </footer>
+      
+      {/* AI Assistant Floating Button */}
+      <AIAssistant />
     </div>
   );
 };
